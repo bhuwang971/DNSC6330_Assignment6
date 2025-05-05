@@ -1,4 +1,4 @@
-# DNSC6330_Assignment6 - Overview
+# DNSC6330_Assignment 6 - RML Overview
 
 ### Basic Information
 
@@ -118,7 +118,7 @@
 | **2 – Explanation & Importance** | Generated global & local feature‑importance plots and partial‑dependence curves for each model. | All models ranked the same top drivers (debt‑to‑income ratio, income, property value, etc.); EBM provided the clearest additive patterns. |
 | **3 – Fairness & AIR Remediation** | Evaluated discrimination via Adverse‑Impact Ratio (AIR) and performed a random‑grid search plus cut‑off tuning to satisfy **AIR ≥ 0.80**. | Remediated EBM lifted **Black / White AIR from 0.768 → 0.824** at cut‑off 0.22 with < 0.3 pp AUC loss. |
 | **4 – Red‑Teaming** | Executed a model‑extraction attack (one‑tree surrogate via a single API call) and crafted > 1 000 adversarial input rows. | Surrogate diagram (`stolen_dt.png`) confirms extraction risk; crafted rows can systematically push pricing predictions up or down. |
-| **5 – Debugging & Robustness** | Ran recession stress‑test, residual‑outlier removal, and class re‑balancing. | Final EBM reached **Validation AUC 0.724** with **min AIR 1.008**; simulated recession dropped AUC to ≈ 0.59, signalling the need for live monitoring. |
+| **5 – Debugging & Robustness** | Ran recession stress‑test, residual‑outlier removal, and class re‑balancing. | Final EBM reached **Validation AUC 0.724** with **min AIR 1.008**; simulated recession dropped AUC to ≈ 0.59, signaling the need for live monitoring. |
 
 ### Quantitative Analysis
 
@@ -183,7 +183,7 @@ Figure 9: Variable importance for stolen model
 Figure 10: Simulate recession conditions in validation data plots
 
 ![image](https://github.com/user-attachments/assets/1bf09bef-9f0e-4a81-82e5-c5246322006f)
-Figure 11: Global logloss residulas plot
+Figure 11: Global logloss residuals plot
 
 ##### Alternative models considered
 
@@ -197,7 +197,8 @@ Figure 11: Global logloss residulas plot
 #### Potential Negative Impacts
 * **Math / software issues**  
   - *Histogram‑bin precision* – the EBM’s `max_bins = 512` discretisation can cause round‑off drift that flips scores across the 0.22 decision cut‑off.  
-  - *Random‑seed sensitivity* – the 10–25‑trial random grid search used in Assignment 3 yields materially different models when the seed changes.  
+  - *Random‑seed sensitivity* – the 10–25‑trial random grid search used in Assignment 3 yields materially different models when the seed changes.
+  - *Software‑update risk* – future releases of `interpret` or its dependencies could change default binning or scoring logic; strict version‑pinning and automated regression tests are required.
 
 * **Security & robustness**  
   - The red‑teaming exercise (Assignment 4) showed a one‑tree surrogate can be stolen with **one API call** (`stolen_dt.png`), enabling > 1 000 crafted inputs that steer predictions.
