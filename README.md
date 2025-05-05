@@ -70,7 +70,7 @@
 ### Evaluation Data
 
 * **Source of evaluation (test) data**  
-  Processed HMDA dataset (2023 snapshot — `hmda_test_preprocessed.csv`).
+  Processed HMDA dataset (2020 snapshot — `hmda_test_preprocessed.csv`).
 
 * **Row count**  
   Test rows  = **19,831** rows.
