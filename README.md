@@ -32,7 +32,7 @@
 ### Training Data
 
 * **Source of training data**  
-  Processed Home Mortgage Disclosure Act (**HMDA**) dataset (2023 snapshot provided with Assignment 1).
+  Processed Home Mortgage Disclosure Act (**HMDA**) dataset (2020 snapshot provided with Assignment 1).
 
 * **How the data was divided**  
   `hmda_train_preprocessed.csv` was split into training and validation sets with **70 % training** and **30 % validation** using:
