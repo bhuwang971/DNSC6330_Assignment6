@@ -3,7 +3,7 @@
 ### Basic Information
 
 1. Person or organization developing model: Patrick Hall (jphall@gwu.edu), Bhuwan Gupta (bhuwang@gwu.edu)
-2. Model date: August, 2021-2025
+2. Model date: 2021-2025
 3. Model version: 1.0
 4. License:  Apache License, Version 2.0 
 5. Model implementation code: [Group_7.ipynb](https://github.com/bhuwang971/DNSC6330_Assignment5/blob/main/assign_5_template.ipynb) 
