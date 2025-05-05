@@ -22,7 +22,7 @@
   - Stress‑test and debug via recession and residual analysis (Assignment 5)
 
 * **Intended users**  
-  - Students in DNSC 6301/6330 learning responsible ML  
+  - Students in DNSC 6330 learning responsible ML  
   - Academic researchers studying interpretable fair‑lending models  
   - Practitioners seeking a worked example of model‑card documentation and AIR remediation  
 
