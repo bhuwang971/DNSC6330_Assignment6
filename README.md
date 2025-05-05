@@ -127,7 +127,7 @@ Results for the best remediated EBM are shown below.
 
 **Table 1 – AUC values across data partitions**
 
-| Metric      | Train AUC | Validation AUC |
+| Metric      | Test AUC | Validation AUC |
 |-------------|-----------|----------------|
 | **AUC Score** | **0.7728** | **0.7243** |
 
