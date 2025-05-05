@@ -1,10 +1,8 @@
-# DNSC6330_Assignment6
-
-## RML Assignments Overview
+# DNSC6330_Assignment6 - Overview
 
 ### Basic Information
 
-1. Person or organization developing model: Bhuwan Gupta(bhuwang@gwu.edu)
+1. Person or organization developing model: Bhuwan Gupta (bhuwang@gwu.edu)
 2. Model date: August, 2021-2025
 3. Model version: 2.0
 4. License: MIT
@@ -12,52 +10,107 @@
 
 ### Intended Use
 
-| Rubric bullet | Statement (sourced from assignment PDFs & course outputs) |
-|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Business value** | The project demonstrates—on real HMDA data—how an **interpretable, bias‑remediated model (EBM)** can flag loans likely to be *high‑priced* (APR ≥ 150 bps) and provide the fairness documentation regulators expect. It offers executives and compliance teams a concrete template for technical review and rapid incident response, fully aligned with the transparency goal described in the Assignment 6 brief. |
-| **How the model is designed to be used** | *Offline* within the course repo to:<br>• Batch‑score the 2020 HMDA dataset (Assignment 1)<br>• Inspect global & local explanations (Assignment 2)<br>• Audit AIR fairness and apply remediation (Assignment 3)<br>• Probe security via model‑extraction & adversarial tests (Assignment 4)<br>• Stress‑test and debug via recession and residual analysis (Assignment 5) |
-| **Intended users** | • Students in DNSC 6301/6330 learning responsible ML<br>• Academic researchers studying interpretable fair‑lending models<br>• Practitioners seeking a worked example of model‑card documentation and AIR remediation |
-| **Additional‑purpose statement** | The model **must not** be used for real‑world mortgage decisioning or any production system without full regulatory compliance checks and human oversight; it is intended solely for educational demonstration on the 2020 HMDA training/test files. |
+### Intended Use
 
+* **Business value**  
+  The project demonstrates—on real HMDA data—how an **interpretable, bias‑remediated model (EBM)** can flag loans likely to be *high‑priced* (APR ≥ 150 bps) and supply the fairness documentation regulators expect. It gives executives and compliance teams a concrete template for technical review and rapid incident response, aligning with the transparency objective in Assignment 6.
 
-### Training Data
+* **How the model is designed to be used**  
+  *Offline* within the course repository to:  
+  - Batch‑score the 2020 HMDA dataset (Assignment 1)  
+  - Inspect global & local explanations (Assignment 2)  
+  - Audit AIR fairness and apply remediation (Assignment 3)  
+  - Probe security via model‑extraction & adversarial tests (Assignment 4)  
+  - Stress‑test and debug via recession and residual analysis (Assignment 5)
+
+* **Intended users**  
+  - Students in DNSC 6301/6330 learning responsible ML  
+  - Academic researchers studying interpretable fair‑lending models  
+  - Practitioners seeking a worked example of model‑card documentation and AIR remediation  
+
+* **Additional‑purpose statement**  
+  The model **must not** be used for real‑world mortgage decisioning or any production system without full regulatory compliance checks and human oversight; it is intended solely for educational demonstration on the 2020 HMDA training/test files.
+
+### Training Data
+
+* **Source of training data**  
+  Processed Home Mortgage Disclosure Act (**HMDA**) dataset (2023 snapshot provided with Assignment 1).
+
+* **How the data was divided**  
+  `hmda_train_preprocessed.csv` was split into training and validation sets with **70 % training** and **30 % validation** using:
+
+  ```python
+  SEED = 12345
+  np.random.seed(SEED)
+  split_ratio = 0.7  # 70% / 30% train‑test split
+  split = np.random.rand(len(data)) < split_ratio
+  train = data[split]
+  valid = data[~split]
+
+* **Row counts**  
+  * Training rows  = **112,253**  
+  * Validation rows = **48,085**
+
 ###### Data Dictionary  
-*(Column meanings sourced from Assignment 1 feature list)*
 
 | Name | Modeling Role | Measurement Level | Description |
 |------|---------------|-------------------|-------------|
-| **term_360** | input | int&nbsp;(binary) | 1 = mortgage term is standard 360 months; 0 = other term |
-| **conforming** | input | int&nbsp;(binary) | 1 = loan meets conforming limits; 0 = non‑conforming (jumbo, HELOC, reverse‑mortgage, etc.) |
-| **debt_to_income_ratio_missing** | input | int&nbsp;(binary) | 1 = borrower’s DTI ratio is missing |
-| **loan_amount_std** | input | float | Standardised (z‑scored) loan amount |
-| **loan_to_value_ratio_std** | input | float | Standardised LTV ratio (loan ÷ property value) |
-| **no_intro_rate_period_std** | input | float | Standardised binary flag for loans with *no* introductory‑rate period |
-| **intro_rate_period_std** | input | float | Standardised length (months) of introductory‑rate period |
-| **property_value_std** | input | float | Standardised appraised property value |
-| **income_std** | input | float | Standardised borrower income |
-| **debt_to_income_ratio_std** | input | float | Standardised borrower debt‑to‑income ratio |
-| **high_priced** | target | int&nbsp;(binary) | 1 = APR ≥ 150 bps above benchmark; 0 = otherwise |
+| **term_360** | input | int (binary) | 1 = loan term is 360 months; 0 = other term |
+| **conforming** | input | int (binary) | 1 = conforming loan; 0 = non‑conforming |
+| **debt_to_income_ratio_missing** | input | int (binary) | 1 = borrower’s DTI missing |
+| **loan_amount_std** | input | float | *Engineered* – z‑scored loan amount |
+| **loan_to_value_ratio_std** | input | float | *Engineered* – z‑scored LTV ratio |
+| **no_intro_rate_period_std** | input | float | *Engineered* – z‑scored flag for *no* introductory‑rate period |
+| **intro_rate_period_std** | input | float | *Engineered* – z‑scored intro‑rate period length |
+| **property_value_std** | input | float | *Engineered* – z‑scored property value |
+| **income_std** | input | float | *Engineered* – z‑scored borrower income |
+| **debt_to_income_ratio_std** | input | float | *Engineered* – z‑scored DTI ratio |
+| **high_priced** | target | int (binary) | 1 = APR ≥ 150 bps above benchmark; 0 = otherwise |
 
-<sub>Binary indicators are encoded as 0/1; continuous features were z‑scored before modelling.</sub>
+<sub>*Engineered columns:* variables with the `_std` suffix are standardised (z‑scored); the `_missing` suffix marks missing values.</sub>
 
-   * Source of training data: Processed HMDA dataset (2023)
-   * How training data was divided into training and validation data: 50% training, 25% validation, 25% test
-   * Number of rows in training and validation data:
-     Training rows: 112253
-     Validation rows: 48085
+### Evaluation Data
 
-## Test Data
-   * Source of test data: Processed HMDA dataset (2023)
-   * Number of rows in test data: 19831
-   * State any differences in columns between training and test data: None
+* **Source of evaluation (test) data**  
+  Processed HMDA dataset (2023 snapshot — `hmda_test_preprocessed.csv`).
 
-## Model details
-   * Columns used as inputs in the final model: 'TERM_360', 'CONFORMING', 'DEBT_TO_INCOME_RATIO_MISSING', 'LOAN_AMOUNT_STD', 'LOAN_TO_VALUE_RATIO_STD', 'NO_INTRO_RATE_PERIOD_STD', 'INTRO_RATE_PERIOD_STD', 'PROPERTY_VALUE_STD', 'INCOME_STD', 'DEBT_TO_INCOME_RATIO_STD'
-   * Column(s) used as target(s) in the final model: 'HIGH_PRICED'
-   * Type of model: Explainable Boosting Machine (EBM)
-   * Software used to implement the model: Python, scikit-learn
-   * Version of the modeling software: 0.22.2.post1
-   * Hyperparameters or other settings of your model : ['loan_amount_std', 'no_intro_rate_period_std', 'term_360', 'income_std', 'debt_to_income_ratio_missing', 'intro_rate_period_std', 'property_value_std']
+* **Row count**  
+  Test rows  = **19,831** rows.
+
+* **Differences vs training data**  
+  The test file has the identical column schema as the training set (all feature columns present); the only distinction is that the target label `high_priced` is withheld.
+
+### Model Details
+
+* **Input columns**  
+  `income_std`, `property_value_std`, `debt_to_income_ratio_missing`, `no_intro_rate_period_std`, `conforming`
+
+* **Target column**  
+  `high_priced`
+
+* **Model type**  
+  **Explainable Boosting Machine (EBM)** — an additive, interpretable gradient‑boosting method.
+
+* **Software**  
+  Python 3.x with scikit‑learn **0.22.2.post1** (EBM via the `interpret` library).
+
+* **Hyper‑parameters / settings**  
+
+  ```python
+  rem_params = {
+      'max_bins': 128,
+      'max_interaction_bins': 16,
+      'interactions': 10,
+      'outer_bags': 12,
+      'inner_bags': 0,
+      'learning_rate': 0.01,
+      'validation_size': 0.5,
+      'min_samples_leaf': 5,
+      'max_leaves': 5,
+      'n_jobs': 4,
+      'early_stopping_rounds': 100,
+      'random_state': 12345
+  }
 
 ## Assignment-wise Results Summary
 
